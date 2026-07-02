@@ -49,6 +49,7 @@ function buildSearchText(row, doc) {
     row.source_stem,
     row.source_note,
     row.source_system,
+    row.match_basis,
     row.local_id,
     row.naid,
     doc.title,
@@ -166,6 +167,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       metadataRow("FRUS URL", doc.url || row.frus_url, doc.url || row.frus_url),
       metadataRow("PDF title", row.archive_title || fileNameFromUrl(row.pdf_url)),
       metadataRow("PDF source", row.source_system),
+      metadataRow("Match basis", row.match_basis),
       metadataRow("Preview source", row.preview_pdf_is_local ? "Local same-origin cache" : "Official remote PDF"),
       metadataRow("Source stem", row.source_stem),
       metadataRow("Local ID", row.local_id),
@@ -192,7 +194,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       searchText: buildSearchText(row, payload.documents[row.doc_key] || {})
     }));
     populateSelects();
-    status.textContent = `${payload.summary.comparison_rows} comparison rows, ${payload.summary.frus_documents} FRUS documents, ${payload.summary.unique_pdf_urls} unique PDF URLs.`;
+    status.textContent = `${payload.summary.comparison_rows} exact-source PDF rows, ${payload.summary.frus_documents} FRUS documents, ${payload.summary.unique_pdf_urls} unique PDF URLs. ${payload.summary.excluded_direct_pdf_rows} broad candidate rows scrubbed.`;
     filteredRows = rows;
     if (!selectedId && rows.length) {
       selectedId = rows[0].id;
